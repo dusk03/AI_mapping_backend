@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from src.db.main import init_db
+from src.auth.routers import auth_router
+from .middleware import register_middleware
 
 
 @asynccontextmanager
@@ -18,3 +20,7 @@ app = FastAPI(
     description="A REST API for a web ai mapping service",
     version=version,
 )
+
+register_middleware(app)
+
+app.include_router(auth_router, prefix="/api/{version}/auth", tags=["auth"])
