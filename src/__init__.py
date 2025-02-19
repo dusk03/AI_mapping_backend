@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from src.db.main import init_db
 from src.auth.routers import auth_router
 from .middleware import register_middleware
+from .errors import register_all_errors
 
 
 @asynccontextmanager
@@ -22,5 +23,6 @@ app = FastAPI(
 )
 
 register_middleware(app)
+register_all_errors(app)
 
 app.include_router(auth_router, prefix="/api/{version}/auth", tags=["auth"])
