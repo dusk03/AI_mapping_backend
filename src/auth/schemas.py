@@ -1,8 +1,5 @@
 from pydantic import BaseModel, Field, EmailStr, validator
 import uuid
-
-# from src.books.schemas import Book
-# from src.reviews.schemas import ReviewModel
 from datetime import datetime
 from typing import List
 
@@ -36,7 +33,7 @@ class UserModel(BaseModel):
     updated_at: datetime
 
     class Config:
-        orm_mode = True  # Enables compatibility with ORMs like SQLModel
+        orm_mode = True
 
 
 class UserLoginModel(BaseModel):
