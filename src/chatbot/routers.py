@@ -11,13 +11,16 @@ from src.chatbot.schemas import (
 from typing import List
 from src.chatbot.service import ChatbotService
 
-role_checker = Depends(RoleChecker(["admin"]))
+role_checker_admin = Depends(RoleChecker(["admin"]))
+role_checker_user = Depends(RoleChecker(["user"]))
 
 chatbot_router = APIRouter()
 chatbot_service = ChatbotService()  # Khởi tạo service
 
 
-@chatbot_router.get("/user", response_model=List[ChatbotBase])
+@chatbot_router.get(
+    "/user", response_model=List[ChatbotBase], dependencies=[role_checker_user]
+)
 async def get_all_chatbots(session: AsyncSession = Depends(get_session)):
     """
     Lấy danh sách tất cả các chatbot.
@@ -29,7 +32,7 @@ async def get_all_chatbots(session: AsyncSession = Depends(get_session)):
 @chatbot_router.get(
     "/admin",
     response_model=List[ChatbotResponse],
-    dependencies=[role_checker],
+    dependencies=[role_checker_admin],
 )
 async def get_all_chatbots_admin(session: AsyncSession = Depends(get_session)):
     """
@@ -43,7 +46,7 @@ async def get_all_chatbots_admin(session: AsyncSession = Depends(get_session)):
     "/admin",
     response_model=ChatbotBase,
     status_code=status.HTTP_201_CREATED,
-    dependencies=[role_checker],
+    dependencies=[role_checker_admin],
 )
 async def create_new_chatbot(
     chatbot_detail: ChatbotCreate, session: AsyncSession = Depends(get_session)
@@ -59,7 +62,7 @@ async def create_new_chatbot(
 @chatbot_router.patch(
     "/admin/{chatbot_id}",
     response_model=ChatbotUpdate,
-    dependencies=[role_checker],
+    dependencies=[role_checker_admin],
 )
 async def update_chatbot(
     chatbot_id: str,
@@ -83,7 +86,7 @@ async def update_chatbot(
 @chatbot_router.delete(
     "/admin/{chatbot_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[role_checker],
+    dependencies=[role_checker_admin],
 )
 async def delete_chatbot(chatbot_id: str, session: AsyncSession = Depends(get_session)):
     """
