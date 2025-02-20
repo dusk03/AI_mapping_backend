@@ -150,13 +150,6 @@ async def get_new_access(token_details: dict = Depends(RefreshTokenBearer())):
     raise InvalidToken()
 
 
-# @auth_router.get("/me", response_model=UserBookModel)
-# async def get_current_user(
-#     user=Depends(get_current_user), _: bool = Depends(role_checker)
-# ):
-#     return user
-
-
 @auth_router.get("/logout")
 async def revoke_token(token_details: dict = Depends(AccessTokenBearer())):
     jti = token_details["jti"]
