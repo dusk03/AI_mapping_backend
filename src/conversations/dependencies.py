@@ -16,11 +16,9 @@ async def check_conversation_owner(
     Lấy một conversation cụ thể theo UID và kiểm tra xem nó có thuộc về user không.
     """
     user_id = user["user"]["user_uid"]
-    print("USER:", type(user_id))
     statement = select(Conversation).where(Conversation.uid == conversation_uid)
     result = await session.exec(statement)
     conversation = result.first()
-    print("Conversation:", type(conversation.user_uid))
     if not conversation:
         return None
 
