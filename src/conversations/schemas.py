@@ -10,8 +10,9 @@ class ConversationBase(BaseModel):
     chatbot_uid: Optional[uuid.UUID]
 
 
-class ConversationCreate(ConversationBase):
-    pass
+class ConversationCreate(BaseModel):
+    title: Optional[str] = None
+    chatbot_uid: Optional[uuid.UUID]
 
 
 class ConversationUpdate(BaseModel):
